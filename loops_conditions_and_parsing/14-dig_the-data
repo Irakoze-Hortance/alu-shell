@@ -1,18 +1,12 @@
 #!/bin/bash
 
-# Path to the /etc/passwd file
-passwd_file="/etc/passwd"
+# Path to the Apache log file
+log_file="/path/to/your/apache/access.log"
 
 # Check if the file exists
-if [ -f "$passwd_file" ]; then
-    # Read the file line by line using a while loop
-    while IFS=: read -r username _ userid _ _ home_directory _; do
-        # Display the required information
-        echo "Username: $username"
-        echo "User ID: $userid"
-        echo "Home Directory: $home_directory"
-        echo "------------------------"
-    done < "$passwd_file"
+if [ -f "$log_file" ]; then
+    # Use awk to process the log file and print the desired output
+    awk '{ ip_count[$1" "$9]++ } END { for (entry in ip_count) print ip_count[entry], entry }' "$log_file" | sort -nr
 else
-    echo "Error: /etc/passwd file not found."
+    echo "Error: Apache log file not found."
 fi
