@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 # Path to the Apache log file
-log_file="/path/to/your/apache/access.log"
+log_file="apache-access.log"
+
+# Debugging: Print the value of log_file
+echo "Log file path: $log_file"
 
 # Check if the file exists
 if [ -f "$log_file" ]; then
+    # Debugging: Print a message indicating that the file exists
+    echo "File exists."
+
     # Use awk to process the log file and print the desired output
     awk '{ ip_count[$1" "$9]++ } END { for (entry in ip_count) print ip_count[entry], entry }' "$log_file" | sort -nr
 else
+    # Debugging: Print a message indicating that the file does not exist
     echo "Error: Apache log file not found."
 fi
