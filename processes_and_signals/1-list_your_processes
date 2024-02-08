@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-#This file prints the running processes
-echo "USER       PID   PPID  PGID  TTY        STAT COMMAND"
-ps axo user,pid,ppid,pgid,tty,stat,comm --forest
+# This script displays list of currently running processes
+# Must show all processes, for all users, including those which might not have a TTY
+# Display a user-oriented format
+# Show process hierarchy
+
+ps -a -x -u -f
