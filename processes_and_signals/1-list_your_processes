@@ -1,3 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#This file prints the running processes
 echo "USER       PID   PPID  PGID  TTY        STAT COMMAND"
 ps axo user,pid,ppid,pgid,tty,stat,comm --forest
