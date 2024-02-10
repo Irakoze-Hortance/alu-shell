@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Check if root
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+# Path to manage_my_process script
+SCRIPT_PATH="manage_my_process"
+
+# Determine which action to take based on the argument
+case "$1" in
+    start)
+        "$SCRIPT_PATH" start
+        ;;
+    stop)
+        "$SCRIPT_PATH" stop
+        ;;
+    restart)
+        "$SCRIPT_PATH" restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
