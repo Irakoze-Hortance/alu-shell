@@ -1,26 +1,48 @@
 #!/usr/bin/env bash
-# Check if root
-if [ "$(id -u)" != "0" ]; then
-    echo "This script must be run as root"
+# Check the number of arguments
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 {start|stop|restart}" >&2
     exit 1
 fi
 
-# Path to manage_my_process script
-SCRIPT_PATH="manage_my_process"
+# Function to start the process
+start_process() {
+    /manage_my_process &
+    echo "$!" > /var/run/my_process.pid
+    echo "manage_my_process started"
+}
+
+# Function to stop the process
+stop_process() {
+    if [ -f /var/run/my_process.pid ]; then
+        pid=$(<"/var/run/my_process.pid")
+        kill "$pid" && rm /var/run/my_process.pid
+        echo "manage_my_process stopped"
+    else
+        echo "manage_my_process is not running"
+    fi
+}
+
+# Function to restart the process
+restart_process() {
+    stop_process
+    start_process
+    echo "manage_my_process restarted"
+}
 
 # Determine which action to take based on the argument
 case "$1" in
     start)
-        "$SCRIPT_PATH" start
+        start_process
         ;;
     stop)
-        "$SCRIPT_PATH" stop
+        stop_process
         ;;
     restart)
-        "$SCRIPT_PATH" restart
+        restart_process
         ;;
     *)
-        echo "Usage: $0 {start|stop|restart}"
+        echo "Usage: $0 {start|stop|restart}" >&2
         exit 1
         ;;
 esac
